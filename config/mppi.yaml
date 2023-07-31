@@ -1,0 +1,73 @@
+default:
+    method: "mppi"
+    max_steps: 1000
+    max_frames: 1000000
+    model_lr: !!float 3e-4
+    reward_scale: 1.0
+    model_iter: 5
+    model_layers: [200,200]
+    model_activation_fun: 'ReLU'
+    reward_layers: [200,200]
+    reward_activation_fun: 'ReLU'
+    name_mod: ''
+    batch_size: 256
+    planner:
+        horizon: 5
+        samples: 20
+        lam: 0.1
+        eps: 0.5
+
+SwimmerEnv_v3:
+    max_frames: 100000
+    model_layers: [200,200]
+    reward_layers: [200,200]
+    name_mod: "_H40"
+    planner:
+        horizon: 40
+        samples: 500
+        lam: 0.1
+    batch_size: 128
+
+AntEnv_v3:
+    batch_size: 256
+    model_layers: [512,512,512]
+    reward_layers: [512,512,512]
+    done_layers: None
+    name_mod: '_H20'
+    planner:
+        horizon: 20
+        samples: 1000
+        lam: 0.5
+    task_info:
+        include_contacts: False
+        task: 'orig'
+        desired_speed: None
+
+HalfCheetahEnv_v3:
+    max_frames: 1000000
+    frame_skip: 1
+    planner:
+        horizon: 10
+        lam: 0.5
+        samples: 500
+    model_layers: [200,200]
+    reward_layers: [200,200]
+    name_mod: "_H10"
+
+PointMass2D_DoubleIntEnv:
+    max_frames: 100000
+    max_steps: 1000
+    name_mod: '_H30'
+    model_lr: !!float 5e-4
+    model_layers: [128,128]
+    reward_layers: [128,128]
+    batch_size: 128
+    planner:
+        horizon: 30
+        samples: 500
+        lam: 0.5
+    env:
+        start_distance: 1.0
+        boundary_distance: 5.0
+        noise: True
+        done_distance: -1

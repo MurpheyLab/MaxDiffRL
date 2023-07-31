@@ -1,0 +1,39 @@
+alpha_sequence:
+  alpha:
+  - 5
+  steps:
+  - 1000
+batch_size: 128
+env:
+  boundary_distance: 5.0
+  done_distance: -1
+  noise: true
+  start_distance: 1.0
+max_frames: 100000
+max_steps: 1000
+method: maxdiff
+model_activation_fun: ReLU
+model_iter: 5
+model_layers:
+- 128
+- 128
+model_lr: 0.0005
+name_mod: _H30_alpha5
+planner:
+  alpha: 0.5
+  explr_dim: None
+  horizon: 30
+  lam: 0.5
+  samples: 500
+  weights:
+  - 1.0
+  - 1.0
+  - 0.01
+  - 0.01
+  window: false
+reward_activation_fun: ReLU
+reward_layers:
+- 128
+- 128
+reward_scale: 1.0
+weights: None

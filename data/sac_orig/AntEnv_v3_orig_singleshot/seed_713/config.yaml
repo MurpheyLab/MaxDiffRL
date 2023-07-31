@@ -1,0 +1,22 @@
+activation_fun: ReLU
+batch_size: 256
+hidden_dim:
+- 512
+- 512
+- 512
+hidden_dim_sac:
+- 512
+- 512
+- 512
+max_frames: 1000000
+max_steps: 1000
+method: sac
+name_mod: _singleshot
+policy_lr: 0.0003
+reward_scale: 5.0
+soft_q_lr: 0.0003
+task_info:
+  desired_speed: None
+  include_contacts: false
+  task: orig
+value_lr: 0.0003

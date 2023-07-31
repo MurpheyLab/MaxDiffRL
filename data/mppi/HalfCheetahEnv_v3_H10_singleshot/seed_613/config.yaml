@@ -1,0 +1,27 @@
+barrier: false
+batch_size: 256
+done_mod: false
+ensemble: false
+frame_skip: 1
+learn_done: false
+max_frames: 1000000
+max_steps: 1000
+method: mppi
+model_activation_fun: ReLU
+model_iter: 5
+model_layers:
+- 200
+- 200
+model_lr: 0.0003
+name_mod: _H10_singleshot
+planner:
+  horizon: 10
+  lam: 0.5
+  samples: 1000
+rew_mod: false
+reward_activation_fun: ReLU
+reward_layers:
+- 200
+- 200
+reward_scale: 1.0
+terrain_mod: false

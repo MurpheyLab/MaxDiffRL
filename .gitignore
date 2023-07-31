@@ -1,0 +1,13 @@
+*__pycache__
+*.pyc
+*.ipynb_checkpoints
+*.bat
+MUJOCO*
+*logfile*.txt
+data_*
+*.pdf
+*.svg
+*figs*
+*.sh
+local*
+data/vid/*

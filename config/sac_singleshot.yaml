@@ -1,0 +1,38 @@
+default:
+    method: "sac"
+    max_steps: 1000
+    max_frames: 1000000
+    policy_lr: !!float 3e-4
+    value_lr: !!float 3e-4
+    soft_q_lr: !!float 3e-4
+    reward_scale: 1.0
+    activation_fun: 'ReLU'
+    name_mod: ''
+    hidden_dim: 256
+    hidden_dim_sac: 256
+    batch_size: 256
+
+SwimmerEnv_v3:
+    batch_size: 128
+    hidden_dim: 256
+    hidden_dim_sac: 256
+    reward_scale: 100.0
+    name_mod: '_rew100'
+
+AntEnv_v3:
+    reward_scale: 5.0
+    name_mod: '_3Blayers'
+    batch_size: 256
+    hidden_dim: [512,512,512]
+    hidden_dim_sac: [512,512,512]
+    task_info:
+        include_contacts: False
+        task: 'orig'
+        desired_speed: None
+
+HalfCheetahEnv_v3:
+    max_frames: 1000000
+    hidden_dim: 256
+    hidden_dim_sac: 256
+    reward_scale: 5.0
+    name_mod: "_singleshot"

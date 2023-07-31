@@ -1,0 +1,12 @@
+activation_fun: ReLU
+batch_size: 128
+hidden_dim: 256
+hidden_dim_sac: 256
+max_frames: 1000000
+max_steps: 1000
+method: sac
+name_mod: _Light_rew100
+policy_lr: 0.0003
+reward_scale: 100.0
+soft_q_lr: 0.0003
+value_lr: 0.0003

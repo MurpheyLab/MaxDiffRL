@@ -1,0 +1,21 @@
+
+batch_size: 128
+max_frames: 1000000
+max_steps: 1000
+method: mppi
+model_activation_fun: ReLU
+model_iter: 5
+model_layers:
+- 200
+- 200
+model_lr: 0.0003
+name_mod: _Light_H40
+planner:
+  horizon: 40
+  lam: 0.1
+  samples: 500
+reward_activation_fun: ReLU
+reward_layers:
+- 200
+- 200
+reward_scale: 1.0

@@ -1,0 +1,17 @@
+activation_fun: ReLU
+barrier: false
+batch_size: 256
+done_mod: false
+frame_skip: 1
+hidden_dim: 256
+hidden_dim_sac: 256
+max_frames: 1000000
+max_steps: 1000
+method: sac
+name_mod: _singleshot
+policy_lr: 0.0003
+rew_mod: false
+reward_scale: 5.0
+soft_q_lr: 0.0003
+terrain_mod: false
+value_lr: 0.0003

@@ -1,0 +1,19 @@
+activation_fun: ReLU
+batch_size: 128
+env:
+  boundary_distance: 5.0
+  done_distance: -1
+  noise: true
+  start_distance: 1.0
+hidden_dim: &id001
+- 128
+- 128
+hidden_dim_sac: *id001
+max_frames: 100000
+max_steps: 1000
+method: sac
+name_mod: _rew25
+policy_lr: 0.0005
+reward_scale: 0.25
+soft_q_lr: 0.0005
+value_lr: 0.0005
