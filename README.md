@@ -12,6 +12,7 @@
     4. Add MuJoCo binary path to your environment path `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.mujoco/mujoco200/bin`
 - Python dependencies can be run with `pip install -r requirements.txt`
     - Note: specified `mujoco_py` version must be used for code to work. Other versions can be modified at your own discretion (e.g. PyTorch with CPU only or with a specific CUDA version)
+    - Troubleshooting: if you get mysterious errors while installing mujoco_py, you may need to specify a different cython version with `pip install "cython<3"`
 
 ## Running the code
 
