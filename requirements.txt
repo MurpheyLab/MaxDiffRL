@@ -1,3 +1,4 @@
+cython==0.29.36
 gym==0.21.0
 imageio_ffmpeg==0.4.7
 matplotlib==3.5.2

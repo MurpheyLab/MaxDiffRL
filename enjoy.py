@@ -47,12 +47,6 @@ args.done_util = True
 
 save_states = False
 
-# extra rendering required for windows
-if sys.platform.lower()[:3] == 'win':
-    args.windows = True
-else:
-    args.windows = False
-
 # added to stop rendering when exiting
 from signal import signal, SIGINT
 from sys import exit
@@ -133,8 +127,6 @@ if __name__ == '__main__':
             test_path = video_path+'{}-mod{}-seed_{}-frame_{}'.format(args.method,args.mod_weight,args.seed,test_frame)
         if os.path.exists(video_path) == False:
             os.makedirs(video_path)
-        if args.windows:
-            env.render(mode="human") # needed for windows
         env = gym.wrappers.Monitor(env, test_path, force=True)
 
     # load models / policies / controllers

@@ -2,6 +2,7 @@
 - Simulations were run on Ubuntu 18.04 and Ubuntu 20.04 operation systems
 - Simulations must be run with Python 3 (tested Python 3.6, Python 3.8, and Python 3.9)
 - PyTorch can be installed with CUDA or CPU only (tested versions 1.7, 1.11, and 2.0)
+- A dockerfile is provided as an alternate to the installation steps below. After installing and running docker desktop on your system, you can instantiate the maxdiff test enviroment with `source run_docker.sh` on Linux or `.\run_docker.bat` on Windows.
 
 
 ## Installation
@@ -12,20 +13,19 @@
     4. Add MuJoCo binary path to your environment path `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.mujoco/mujoco200/bin`
 - Python dependencies can be run with `pip install -r requirements.txt`
     - Note: specified `mujoco_py` version must be used for code to work. Other versions can be modified at your own discretion (e.g. PyTorch with CPU only or with a specific CUDA version)
-    - Troubleshooting: if you get mysterious errors while installing mujoco_py, you may need to specify a different cython version with `pip install "cython<3"`
 
 ## Running the code
 
 To train a policy, modify the relevant yaml file for your test scenario (`config/<method>.yaml`). Then, run the following with the desired arguments (possible arguments can be viewed with `python train.py --help`)
 ```
-python train.py --env PointMass2D_DoubleIntEnv --method maxdiff --seed 13 --beta 0.1
-python train.py --env SwimmerEnv_v3 --method maxdiff --seed 13
+python3 train.py --env PointMass2D_DoubleIntEnv --method maxdiff --seed 13 --beta 0.1
+python3 train.py --env SwimmerEnv_v3 --method maxdiff --seed 13
 ```
 
 To playback the learned policy, run the following with the arguments matching your training configuration (possible arguments can be viewed with `python train.py --help`)
 ```
-python enjoy.py --env PointMass2D_DoubleIntEnv --method maxdiff --mod _H30_alpha5 --beta 0.1
-python enjoy.py --env SwimmerEnv_v3 --method maxdiff --seed 13 --mod _H40_alpha100
+python3 enjoy.py --env PointMass2D_DoubleIntEnv --method maxdiff --mod _H30_alpha5 --beta 0.1
+python3 enjoy.py --env SwimmerEnv_v3 --method maxdiff --seed 13 --mod _H40_alpha100
 ```
 
 Results can also be visualized in the jupyter-notebooks provided in the `notebooks` folder.
