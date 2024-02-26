@@ -85,7 +85,7 @@ Results can also be visualized in the jupyter-notebooks provided in the `noteboo
 
 ## Copyright and License
 
-The implementations of MaxDiff contained herein are copyright (C) 2023 - 2024 by Allison Pinosky and Todd Murphey and are distributed under the terms of the GNU General Public License (GPL) version 3 (or later). Please see the LICENSE for more information.
+The implementations of MaxDiff contained herein are copyright (C) 2024 - 2025 by Allison Pinosky and Todd Murphey and are distributed under the terms of the GNU General Public License (GPL) version 3 (or later). Please see the LICENSE for more information.
 
 Contact: apinosky@u.northwestern.edu
 
