@@ -8,9 +8,6 @@ import torch
 from matplotlib.patches import ConnectionPatch
 from matplotlib.lines import Line2D
 import seaborn as sns
-# sns.set_palette("tab20")
-
-# warnings.filterwarnings(action='once')
 
 class PM_Viewer(object):
     def __init__(self,args,display=True):
@@ -31,7 +28,7 @@ class PM_Viewer(object):
 
         self.display = display
 
-        if self.display:
+        if self.display and 'TkAgg' in matplotlib.rcsetup.interactive_bk: 
             matplotlib.use('TkAgg')
 
         self.build_fig(dist,inset)
@@ -63,8 +60,6 @@ class PM_Viewer(object):
             ax.set_aspect('equal')
             ax.set(xlim=boundary,ylim=boundary)
 
-        # cirlce_vis = plt.Circle((0,0),1,facecolor='none',edgecolor='white',ls='dotted')
-        # axs[1].add_patch(cirlce_vis)
         inset_patch = plt.Rectangle((-inset,-inset),inset*2,inset*2,facecolor='none',edgecolor='magenta')
         axs[0].add_patch(inset_patch)
         for coords1,coords2 in zip([(inset,-inset),(inset,inset)],[(-inset,-inset),(-inset,inset)]):
@@ -108,8 +103,8 @@ class PM_Viewer(object):
         for ax,clip_on,boundary in zip([self.ax,self.ax2],[False,True],[self.boundary,self.boundary2]):
             ax.plot(xy[:,0],xy[:,1],'-+',color=color,label=label)
             ax.plot(0,0,'wx')
-            ax.plot(xy[0,0],xy[0,1],'wo') #,clip_on=clip_on)
-            ax.plot(xy[-1,0],xy[-1,1],'rs') #,clip_on=clip_on)
+            ax.plot(xy[0,0],xy[0,1],'wo')
+            ax.plot(xy[-1,0],xy[-1,1],'rs')
             # set lims
             ax.set_aspect('equal')
             ax.set(xlim=boundary,ylim=boundary)
@@ -127,7 +122,7 @@ class PM_Viewer(object):
                 plt.pause(1e-4)
 
     def save(self,path):
-        plt.savefig(path) #, bbox_inches='tight')
+        plt.savefig(path) 
 
     def close(self):
         plt.close(self.fig)
@@ -153,7 +148,7 @@ class PM_Viewer_plain(object):
 
         self.display = display
 
-        if self.display:
+        if self.display and 'TkAgg' in matplotlib.rcsetup.interactive_bk: 
             matplotlib.use('TkAgg')
 
         self.build_fig(dist,inset)
@@ -213,9 +208,9 @@ class PM_Viewer_plain(object):
         else:
             self.ax.plot(xy[:,0],xy[:,1],'-+',color=color,label=label,linewidth=lw)
             self.ax.plot(0,0,'kx')
-            self.ax.plot(xy[0,0],xy[0,1],'ko') #,clip_on=True)
-            self.ax.plot(xy[-1,0],xy[-1,1],'rs') #,clip_on=True)
-            legend = self.ax.legend(bbox_to_anchor=(1.02,0.95), loc="upper left",ncol=ncol,title='Path') # labelcolor='linecolor',
+            self.ax.plot(xy[0,0],xy[0,1],'ko') 
+            self.ax.plot(xy[-1,0],xy[-1,1],'rs') 
+            legend = self.ax.legend(bbox_to_anchor=(1.02,0.95), loc="upper left",ncol=ncol,title='Path')
         # set lims
         self.ax.set_aspect('equal','box')
         self.ax.set(xlim=self.boundary2,ylim=self.boundary2)
@@ -229,7 +224,7 @@ class PM_Viewer_plain(object):
                 plt.pause(1e-4)
 
     def save(self,path):
-        plt.savefig(path) #, bbox_inches='tight')
+        plt.savefig(path) 
 
     def close(self):
         plt.close(self.fig)

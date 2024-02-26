@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
 from torch.distributions import Normal
 from termcolor import cprint
 
@@ -31,13 +28,6 @@ class PolicyNetwork(nn.Module):
         modules.append(_AF)
         modules.append(nn.Linear(hidden_size[-1], num_actions*2))
         self.mu = nn.Sequential(*modules)
-
-
-        # self.mu = nn.Sequential(
-        #     nn.Linear(num_inputs, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, num_actions*2)
-        # )
 
         self.log_std_min = log_std_min
         self.log_std_max = log_std_max

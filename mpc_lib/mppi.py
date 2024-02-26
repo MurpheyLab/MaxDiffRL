@@ -74,7 +74,6 @@ class PathIntegral(object):
             log_prob        = torch.zeros(self.t_H,self.samples,device=self.device)
             da              = torch.zeros(self.t_H,self.samples,self.num_actions,device=self.device)
             eta             = torch.zeros(self.samples, self.num_actions,device=self.device)
-            dones           = torch.zeros(self.t_H,self.samples,device=self.device)
 
             if self.use_real_env:
                 self.model.set_state(state[None,:].repeat(self.samples,0))
@@ -97,9 +96,8 @@ class PathIntegral(object):
                     barrier_cost.append(self.barrier.cost(torch.FloatTensor(s).to(self.device)))
                     sk.append(rew.copy())
                 else:
-                    # s, rew = self.model.step(s, v) # doesnt work for traced model
                     s, _, rew, _ = self.model(s, v)
-                    s = torch.clamp(s,-self.bound,self.bound) # prevent crazy unbounded stuff from happening
+                    s = torch.clamp(s,-self.bound,self.bound)
                     barrier_cost[t] = self.barrier.cost(s.detach().clone())
                     sk[t] = rew.squeeze()
 
@@ -109,7 +107,6 @@ class PathIntegral(object):
             if self.receding:
                 sk = sk*self.gammas
 
-            # if self.ctrl_var_explr and not eval:
             if self.ctrl_var_explr or eval_ctrl:
                 sk = sk + self.lam*log_prob
 

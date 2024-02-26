@@ -19,8 +19,7 @@ class Model(nn.Module):
     def __init__(self, num_states, num_actions,init_w=3e-3,
                  model_layers=[200, 200],reward_layers=[200,200],std=1e-6,
                  model_AF='relu', reward_AF='relu',stoch=False,
-                 log_std_min=-10, log_std_max=2, print_nets=False,
-                 done_layers=[200,200], done_AF='relu',):
+                 log_std_min=-10, log_std_max=2, print_nets=False):
 
         super(Model, self).__init__()
         self.num_states  = nn.Parameter(torch.tensor(num_states),requires_grad=False)
@@ -34,7 +33,6 @@ class Model(nn.Module):
         '''
         _AF = self._activations[model_AF.lower()]
         _AF_rew = self._activations[reward_AF.lower()]
-        _AF_done = self._activations[done_AF.lower()]
         out_multiplier = 2 if stoch else 1
 
 
@@ -92,13 +90,10 @@ class Model(nn.Module):
         _in   = torch.cat([s, a], dim=1)
         if self.stoch:
             x,log_std  = torch.split(self.mu(_in),[self.num_states,self.num_states],dim=-1)
-            # std = log_std.exp()
             std = torch.clamp(log_std, self.log_std_min, self.log_std_max).exp()
         else:
             x = self.mu(_in)
-            # in case I want to update the way the var looks like
             std = torch.clamp(self.log_std,self.log_std_min, self.log_std_max).exp().expand_as(x)
-            # std = self.log_std.exp().expand_as(x)
         rew = self.reward_fun(_in)
         return x+s, std, rew, torch.zeros(0)
 

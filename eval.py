@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 
-import sys
-import os
-from pathlib import Path
 import yaml
 from termcolor import cprint
-from datetime import datetime
 import time
 from utils import get_duration
 
@@ -13,7 +9,6 @@ import torch
 import numpy as np
 import random
 import pickle
-import gym
 
 # local imports
 from envs import build_env
@@ -46,7 +41,7 @@ parser.add_argument('--start_mode', type=str, default='one_corner',help="(PointM
 parser.add_argument('--beta', type=float, default=0.01, help='(PointMass envs only) weights pointmass control matrix (e.g. 1.0, 0.1, 0.01, 0.001) ')
 
 args = parser.parse_args()
-cprint(args,'cyan') # other good colors are red, green, yellow, magenta
+cprint(args,'cyan') 
 args.v3 = 'v3' in args.env
 args.pointmass = 'PointMass' in args.env
 

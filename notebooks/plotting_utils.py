@@ -6,7 +6,6 @@ import pickle
 import numpy as np
 import glob
 import matplotlib.pyplot as plt
-import matplotlib.font_manager
 import seaborn as sns
 sns.set(style="whitegrid")
 
@@ -25,7 +24,6 @@ def setup_formatting():
                          'legend.fontsize': font_sizes[0],
                          'xtick.labelsize': font_sizes[1], 'ytick.labelsize': font_sizes[1], 
                          'axes.labelsize': font_sizes[2], 'axes.titlesize': font_sizes[2], 'figure.titlesize': font_sizes[2],'figure.figsize': fig_size})
-    # plt.rcParams.keys()
 
 def pull_max(d,xs,start_idx):
     _rew = None
@@ -52,7 +50,6 @@ def process_data(env_path, N=60,get_max=False, start_idx=0, penalize_early_stop=
             data.append(data_set)
         except:
             pass
-#     print(f'{i+1} seeds',env_path)
         
     # process data sets (skip early termination and pull max values if specified)
     interp_data, raw_data, interp_steps = [], [], []
@@ -61,7 +58,7 @@ def process_data(env_path, N=60,get_max=False, start_idx=0, penalize_early_stop=
     for data_set in data:
         _x, _y = data_set[:,xy_idx].T 
         try: 
-            _steps = data_set[:,3] # if saved steps (added after some simulations were run)
+            _steps = data_set[:,3] 
         except: 
             _steps = np.roll(np.roll(data_set[:,0],-1 ) - data_set[:,0],1)
             _steps[0] = _x[0]            
@@ -121,18 +118,20 @@ from matplotlib.patches import Patch
 def load_data(env_path, data_file='reward_data.pkl'):
     # load data sets
     data = []
+    min_size = 100000000
     for i,path in enumerate(glob.glob(env_path + 'seed*/')):
         try: 
             data_set = pickle.load(open(path + data_file, 'rb'))
             data.append(np.stack(data_set))
+            if len(data_set) < min_size:
+                min_size = len(data_set)
         except:
             pass
-    # print([f'{label}: {dim}' for label, dim in zip(['seeds','iters'], np.array(data).shape)]+[env_path])
     y_data = []
     xy_idx = [0, 1]
     for data_set in data:
         _x, _y = data_set[:,xy_idx].T 
-        y_data.append(_y)
+        y_data.append(_y[-min_size:])
     y_data = np.array(y_data,dtype=np.float)
     y_data = y_data[~np.isnan(y_data)]
     
@@ -187,7 +186,7 @@ def process_eval_data(env_path, penalize_early_stop=False, skip_early_stop=True,
     xy_idx = [0, 1]
     for data_set in data:
         _, _y = data_set[:,xy_idx].T 
-        _steps = data_set[:,3] # if saved steps (added after some simulations were run)
+        _steps = data_set[:,3]
         if skip_early_stop:
             data_idx = (_steps >= max_steps)
             _y = _y[data_idx]
@@ -199,18 +198,14 @@ def process_eval_data(env_path, penalize_early_stop=False, skip_early_stop=True,
                 
     y_data = y_data[~np.isnan(y_data)]
     if reject_outliers: 
-        locs = reject_outliers_fn(y_data,80) # 68,95,99.7 = 1,2,3 sigma
+        locs = reject_outliers_fn(y_data,80) 
         y_data  = y_data[locs]
 
-    # if ( len(data) > 0 and len(data) < 10 ) or (y_data.shape[0]  > 0 and y_data.shape[0] < 1000): 
-    #     print(len(data),y_data.shape,env_path.split('/')[-3:])    
-        
     # save processed data to log
     x_samples = 1.
     mean = np.mean(y_data)
     std  = np.std(y_data)
     data_log = {'x' : x_samples, 'mean' : mean, 'std' : std, 
-               # 'max' : np.max(y_data), 'min' : np.min(y_data),
                '-std' : mean-std, '+std' : mean+std,'data':y_data}
     
     return data_log

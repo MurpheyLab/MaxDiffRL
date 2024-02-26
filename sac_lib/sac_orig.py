@@ -21,8 +21,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
-from torch.distributions import Normal
 
 # alg specific imports
 from .sac_networks import SoftQNetwork, ValueNetwork
@@ -31,7 +29,6 @@ from termcolor import cprint
 class SoftActorCritic(object):
 
     def __init__(self, policy, state_dim, action_dim, replay_buffer,
-                            alpha       = 1.0,
                             hidden_dim  = 256,
                             value_lr    = 3e-4,
                             soft_q_lr   = 3e-4,
@@ -43,7 +40,6 @@ class SoftActorCritic(object):
 
         self.device = device
         self.tensor = tensor
-        self.alpha  = alpha
 
         # set up the networks
         self.value_net        = ValueNetwork(state_dim, hidden_dim,print_nets).to(self.device)
@@ -92,8 +88,6 @@ class SoftActorCritic(object):
         expected_q1_value, expected_q2_value = self.soft_q_net(state, action)
         expected_value   = self.value_net(state)
         new_action, log_prob, z, mean, log_std = self.policy_net.evaluate(state)
-        '''replaced log prob '''
-        log_prob = self.alpha*log_prob
 
         target_value = self.target_value_net(next_state)
         next_q_value = reward + (1 - done) * gamma * target_value                     # eqn 8

@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 
+import numpy as np
 import datetime
 import time
 from termcolor import cprint
 import yaml
 import torch
 import os
+import torch
+from typing import List
 
 def get_duration(start_time,print_update=True):
     duration_str = str(datetime.timedelta(seconds=(time.time()-start_time)))
     if print_update: cprint('runtime: '+duration_str,'magenta')
     return duration_str
-
-import torch
-from torch.distributions import Normal
-from typing import List
 
 def _batch_mv(mat: torch.Tensor,vec: torch.Tensor):
     '''assumes batch dim=0'''
@@ -37,8 +36,6 @@ def jit_prob_dist(
             return prob_dist.__repr__()
     return JITProbDist()
 
-import numpy as np
-
 def obs_to_np(time_step,subset=True):
     if subset:
         states = ['origin','torso_velocity','torso_upright',
@@ -48,7 +45,6 @@ def obs_to_np(time_step,subset=True):
         obs.append(ego_state)
     else:
         obs = list(time_step.observation.values())
-        # obs[2] = obs[2].reshape(1,)
     obs = np.hstack(obs)
     return obs
 
@@ -68,7 +64,6 @@ def save_config(args,config,env_name):
         yaml.safe_dump(config,f)
 
     # save config
-    # cprint(torch.__config__.parallel_info(),'blue')
     cprint(path,'red')
     with open(path + "/../config.txt","a") as f:
         f.write('\n'+ date_str )

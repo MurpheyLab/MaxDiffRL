@@ -8,7 +8,7 @@ class PointMass(object):
     def __init__(self,beta,A,B,start_distance,boundary_distance,dt,explr_dim,noise,start_mode,integration_method,done_distance,clip_rew=False):
         self.beta = beta
         self.manual_seed = None
-        self.vel_mul = 0. #.01
+        self.vel_mul = 0. 
         self.loc_mul = 1.0
         self.transition_noise = False
 
@@ -47,7 +47,6 @@ class PointMass(object):
         cprint(['A',self._A,'B',self._B],'red')
 
     def seed(self,seed):
-        # self.npr = np.random.default_rng(seed)
         self.npr = np.random.RandomState(seed)
         self.manual_seed = seed
 
@@ -116,7 +115,6 @@ class PointMass(object):
         loc_reward = self.reward(observation.copy())
         vel_reward = self.vel_bonus(self.state.copy(),observation.copy())
         reward = self.loc_mul*loc_reward + self.vel_mul*vel_reward
-        # print(reward, self.loc_mul*loc_reward, self.vel_mul*vel_reward)
 
         self.state = observation.copy()
         if self.boundary > 0:

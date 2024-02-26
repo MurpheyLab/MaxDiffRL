@@ -6,6 +6,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     gedit \
     gir1.2-keybinder-3.0 \
+    gnome-terminal \
     htop \
     libgl1-mesa-dev \
     libgl1-mesa-glx \
@@ -46,6 +47,7 @@ RUN pip3 install --no-cache-dir jupyterlab
 ADD . $HOME/work
 
 RUN echo "LD_LIBRARY_PATH=$HOME/.mujoco/mujoco200/bin:${LD_LIBRARY_PATH}" >> $HOME/.bashrc
+RUN echo "PATH=$HOME/.local/bin:${PATH}" >> $HOME/.bashrc
 RUN echo "alias python=python3" >> $HOME/.bashrc
 RUN echo "gedit $HOME/work/README.md &" >> $HOME/.bashrc
 

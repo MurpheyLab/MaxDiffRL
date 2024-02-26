@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-import os
 import yaml
 from termcolor import cprint
 from datetime import datetime
@@ -9,6 +7,8 @@ import time
 
 import torch
 import numpy as np
+np.finfo(np.dtype("float32"))
+np.finfo(np.dtype("float64"))
 import random
 import pickle
 import argparse
@@ -39,7 +39,7 @@ parser.add_argument('--start_mode', type=str, default='one_corner',help="[PointM
 parser.add_argument('--beta', type=float, default=0.01, help='[PointMass envs only] weights pointmass A matrix (e.g. 1.0, 0.1, 0.01, 0.001) ')
 
 args = parser.parse_args()
-cprint(args,'cyan') # other good colors are red, green, yellow, magenta
+cprint(args,'cyan') 
 
 args.v3 = 'v3' in args.env
 args.pointmass = 'PointMass' in args.env
@@ -93,8 +93,6 @@ def end_test():
         else:
             buff = replay_buffer.get_final_samples(10000)
             pickle.dump(buff, open(path + 'buffer_data'+ '.pkl', 'wb'))
-
-
 
 def handler(signal_received, frame):
     # Handle any cleanup here
@@ -220,7 +218,6 @@ if __name__ == '__main__':
             inputs = (torch.rand(config['planner']['samples'],state_dim,device=device),torch.rand( config['planner']['samples'],action_dim,device=device))
             jit_model_plan = torch.jit.trace(model,inputs) # set up traced model
             primed = jit_model_plan(*inputs) # prime model
-            # print(jit_model_plan.graph)
         #### jit model for optimizer (batch size)
         inputs = (torch.rand(config['batch_size'],state_dim,device=device),torch.rand( config['batch_size'],action_dim,device=device))
         jit_model_opt = torch.jit.trace(model,inputs) # set up traced model

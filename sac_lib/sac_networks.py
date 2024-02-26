@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 
-#!/usr/bin/env python3
-
 import torch
 import torch.nn as nn
-import torch.optim as optim
-import torch.nn.functional as F
-from torch.distributions import Normal
 from termcolor import cprint
 
 class SoftQNetwork(nn.Module):
@@ -39,16 +34,6 @@ class SoftQNetwork(nn.Module):
         modules.append(nn.Linear(hidden_size[-1], 1))
         self.q2 = nn.Sequential(*modules)
 
-        # self.q1 = nn.Sequential(
-        #     nn.Linear(num_inputs + num_actions, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, 1)
-        # )
-        # self.q2 = nn.Sequential(
-        #     nn.Linear(num_inputs + num_actions, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, 1)
-        # )
         #init weights
         self.q1[-1].weight.data.uniform_(-init_w,init_w)
         self.q1[-1].bias.data.uniform_(-init_w,init_w)
@@ -79,12 +64,6 @@ class ValueNetwork(nn.Module):
         modules.append(_AF)
         modules.append(nn.Linear(hidden_size[-1], 1))
         self.v = nn.Sequential(*modules)
-
-        # self.v = nn.Sequential(
-        #     nn.Linear(state_dim, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, hidden_size), nn.ReLU(),
-        #     nn.Linear(hidden_size, 1)
-        # )
 
         #init weights
         self.v[-1].weight.data.uniform_(-init_w,init_w)

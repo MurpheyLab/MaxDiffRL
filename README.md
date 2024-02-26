@@ -2,16 +2,17 @@
 - Simulations were run on Ubuntu 18.04 and Ubuntu 20.04 operation systems
 - Simulations must be run with Python 3 (tested Python 3.6, Python 3.8, and Python 3.9)
 - PyTorch can be installed with CUDA or CPU only (tested versions 1.7, 1.11, and 2.0)
-- A dockerfile is provided as an alternate to the installation steps below. After installing and running docker desktop on your system, you can instantiate the maxdiff test enviroment with `source run_docker.sh` on Linux or `.\run_docker.bat` on Windows.
+- A dockerfile is provided as an alternate to the installation steps below. After installing and running docker desktop on your system, you can instantiate the maxdiff test enviroment with `source run_docker.sh` on Ubuntu or `.\run_docker.bat` on Windows.
 
 
 ## Installation
 - MuJoCo must be installed prior to installing python `mujoco_py` package. 
-    1. Download free license from MuJoCo website (https://www.roboti.us/license.html)
+    1. Download free license from MuJoCo website (visit https://www.roboti.us/license.html and click on "Activation Key")
     2. Download the MuJoCo version 2.0 binaries for Linux (https://www.roboti.us/download/mujoco200_linux.zip)
     3. Unzip the downloaded `mujoco200` directory into `~/.mujoco/mujoco200`, and place your license key (the `mjkey.txt` file) at `~/.mujoco/mjkey.txt`.
     4. Add MuJoCo binary path to your environment path `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.mujoco/mujoco200/bin`
-- Python dependencies can be run with `pip install -r requirements.txt`
+- Make sure you have the following libaries installed `sudo apt install libosmesa6-dev libgl1-mesa-glx libglfw3 patchelf`
+- Python dependencies can be installed with `pip install -r requirements.txt`
     - Note: specified `mujoco_py` version must be used for code to work. Other versions can be modified at your own discretion (e.g. PyTorch with CPU only or with a specific CUDA version)
 
 ## Running the code
@@ -70,10 +71,14 @@ Results can also be visualized in the jupyter-notebooks provided in the `noteboo
 │   ├── policynetwork.py          # policy network
 │   ├── sac_orig.py               # SAC training module (with optimizer)
 │   └── sac_networks.py           # SAC training networks
+├── Dockerfile                    # Contains setup instructions for docker
+├── enjoy.py                      # replay of trained policies (visualization only)
+├── eval.py                       # test trained policies (collect data for analysis)
 ├── LICENSE
-├── enjoy.py                      # replay of trained policies
 ├── README.md
 ├── requirements.txt              # python dependencies
+├── run_docker.bat                # run file to start docker container on Ubuntu systems
+├── run_docker.sh                 # run file to start docker container on Windows systems
 ├── train.py                      # main training function
 └── utils.py                      # helper functions
 ```

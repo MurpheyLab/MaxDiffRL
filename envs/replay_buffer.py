@@ -36,7 +36,6 @@ class ReplayBuffer:
             return self.position
 
     def seed(self,seed):
-        # self.npr = np.random.default_rng(seed)
         self.npr = np.random.RandomState(seed)
 
     def get_all_samples(self):

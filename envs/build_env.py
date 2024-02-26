@@ -83,7 +83,6 @@ def build_env(args,config,device):
                 env_name = args.env
                 multi_ant_wrapper = True
             elif env_name=='AntEnv_v3':
-                # env_args['healthy_z_range'] = (0.26,np.inf) # was set to (0.2,1.0) but didn't actually end when upside down
                 env_args['ctrl_cost_weight'] = 0.
                 env_args['contact_cost_weight'] = 0.
                 env_args['healthy_reward'] = 0.
@@ -96,11 +95,9 @@ def build_env(args,config,device):
         except TypeError as err:
             del env_args['render']
             try:
-                # print('no argument render,  assuming env.render will just work')
                 env = NormalizedActions(env_list[env_name](**env_args))
             except TypeError as err:
                 del env_args['terminate_when_unhealthy']
-                # print('no argument terminate_when_unhealthy')
                 env = NormalizedActions(env_list[env_name](**env_args))
 
         if env_name=='AntEnv_v3':
@@ -108,10 +105,6 @@ def build_env(args,config,device):
             env = AntContactsWrapper(env,**config['task_info'])
             env_name = env_name + '_' + config['task_info']['task']
 
-        if 'linear' in args.__dict__.keys():
-            if args.linear:
-                from envs.wrappers import Linearize
-                env = Linearize(env,env_name)
         action_dim = env.action_space.shape[0]
         state_dim  = env.observation_space.shape[0]
 

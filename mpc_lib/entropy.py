@@ -3,7 +3,6 @@
 import torch
 from torch.distributions import Normal
 from utils import jit_prob_dist
-from .utils import quat2angle, quat2mat
 
 def cov(tensor: torch.Tensor, rowvar: bool=True, bias:bool=False):
     """Estimate a covariance matrix (np.cov)
@@ -13,25 +12,6 @@ def cov(tensor: torch.Tensor, rowvar: bool=True, bias:bool=False):
     tensor = tensor - tensor.mean(dim=-1, keepdim=True)
     factor = 1 / (tensor.shape[-1] - int(not bool(bias)))
     return factor * tensor @ tensor.transpose(-1, -2).conj()
-
-@torch.jit.ignore
-def get_angle(angle_idx,state):
-    tmp = state.unsqueeze(-1)
-    state[:,:,angle_idx[0].item()] = torch.atan2(tmp[:,:,angle_idx[0].item()],tmp[:,:,angle_idx[1].item()]).squeeze()
-    return torch.cat([state[:,:,:angle_idx[1].item()],state[:,:,(angle_idx[1].item()+1):]],dim=-1)
-
-def check_learning_rate(planner,ep_rews,last_update,num_check=10,thresh=0.001,rate=2.):
-    # ep_rews = list ([frame_idx, episode_reward,ep_num]
-    if len(ep_rews) > 0:
-        if ep_rews[-1][2]-last_update > num_check:
-            # finite_difference = (ep_rews[-1][1]-ep_rews[-5][1])/(ep_rews[-1][0]-ep_rews[-5][0])
-            finite_difference = [((ep_rews[-1][1]-ep_rews[idx][1])/(ep_rews[-1][0]-ep_rews[idx][0]) < thresh) for idx in range(-num_check,-1)]
-            if all(finite_difference):
-                # planner.alpha *= 0.1
-                planner.alpha /= rate
-                print('updated alpha to {}'.format(planner.alpha))
-                return ep_rews[-1][2]
-    return last_update
 
 ''' entropy utils '''
 
@@ -62,7 +42,6 @@ class GetEntropy(torch.nn.Module):
 
     def extra_repr(self):
         out = []
-        # out = out + [x+': '+str(self._parameters[x].data) for x in self.__tensor_attributes__]
         out = out + [x+': '+str(self._buffers[x].data) for x in self.__tensor_attributes__]
         out = out + [x+': '+str(self.__dict__[x]) for x in self.__attributes__]
         return ', \n'.join(out)
@@ -75,7 +54,6 @@ class GetEntropy(torch.nn.Module):
             traj = torch.transpose(traj.unsqueeze(1),-1,-2) # dim, size, step
         else:
             traj = traj.unfold(1,self.window_size,self.step_size) # dim, size, step
-        # print(self.step_size,self.window_size,traj.shape)
         if 'quad' in self.weight_method:
             C = self.cov_weights @ cov(traj) @ self.cov_weights
         elif 'mul' in self.weight_method:
@@ -97,8 +75,6 @@ class GetEntropy(torch.nn.Module):
                 nan_logdet = torch.max(logdet[~nans]) # sanitycheck2
             logdet[nans] = nan_logdet
 
-        # eval,_=torch.symeig(C)
-        # logdet = torch.sum(eval.log(),dim=1)
         S = torch.mean(0.5*logdet,dim=1)
         return S
 
@@ -130,9 +106,5 @@ def get_entropy_params(horizon,num_states,device,explr_dim,angle_idx,weights,win
     explr_dim = torch.tensor(explr_dim)
     angle_idx = torch.tensor(angle_idx)
     quat_specs = torch.tensor(quat_specs)
-    # window_size = torch.tensor(window_size)
-    # step_size = torch.tensor(step_size)
-    # num_windows = torch.tensor(num_windows)
-    # explr_size = torch.tensor(explr_size)
     return GetEntropy(full_dim, explr_dim,cov_weights,angle_idx,convert_quat,quat_specs,
                         window_size,step_size,num_windows,explr_size,device,logdet_method,weight_method).to(device)
