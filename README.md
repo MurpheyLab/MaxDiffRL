@@ -1,3 +1,6 @@
+# Maximum diffusion reinforcement learning repository
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10723320.svg)](https://doi.org/10.5281/zenodo.10723320)
+
 ## System Requirements
 - Simulations were run on Ubuntu 18.04 and Ubuntu 20.04 operation systems
 - Simulations must be run with Python 3 (tested Python 3.6, Python 3.8, and Python 3.9)
